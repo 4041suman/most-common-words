@@ -1,0 +1,52 @@
+import java.util.*;
+
+class HelloWorld {
+    public static void main(String[] args) {
+        String paragraph = "Bob. hIt, baLl , heol";
+        String[] banned = {"bob", "hit"};
+
+        Solution solution = new Solution();
+        List<String> result = solution.mostCommonWords(paragraph, banned);
+        System.out.println("Most common non-banned word(s): " + result);
+    }
+}
+
+class Solution {
+    public List<String> mostCommonWords(String paragraph, String[] banned) {
+        paragraph = paragraph.toLowerCase().replaceAll("[^a-z ]", " ");
+
+        // Split paragraph into words
+        String[] words = paragraph.split("\\s+");
+
+        // Set up a HashSet for banned words
+        Set<String> bannedSet = new HashSet<>(Arrays.asList(banned));
+
+        // Map to count occurrences of each word
+        Map<String, Integer> wordCount = new HashMap<>();
+
+        // Count occurrences of each word (excluding banned words)
+        for (String word : words) {
+            if (!bannedSet.contains(word) && !word.isEmpty()) {
+                wordCount.put(word, wordCount.getOrDefault(word, 0) + 1);
+            }
+        }
+
+        // Find the most common words
+        List<String> mostCommonWords = new ArrayList<>();
+        int maxCount = 0;
+
+        for (Map.Entry<String, Integer> entry : wordCount.entrySet()) {
+            int count = entry.getValue();
+            String word = entry.getKey();
+            if (count > maxCount) {
+                mostCommonWords.clear();
+                mostCommonWords.add(word);
+                maxCount = count;
+            } else if (count == maxCount) {
+                mostCommonWords.add(word);
+            }
+        }
+
+        return mostCommonWords;
+    }
+}
