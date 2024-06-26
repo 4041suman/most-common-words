@@ -1,0 +1,39 @@
+import java.util.*;
+
+class HelloWorld {
+    public static void main(String[] args) {
+        String paragraph ="Bob. hIt, baLl , heol";
+        String banned[] ={"bob", "hit"};
+
+        Solution solution = new Solution();
+        System.out.println(solution.mostCommonWord(paragraph,banned));
+    }
+}
+
+class Solution {
+    public String mostCommonWord(String paragraph, String[] banned) {
+       paragraph = paragraph.toLowerCase().replaceAll("[^a-z]"," ");
+
+      String a[]= paragraph.split(" ");
+      Map<String,Integer> map = new HashMap<>();
+      for(String word : a){
+          if(!word.isEmpty())
+            map.put(word,map.getOrDefault(word,0)+1);
+      }
+      for(String banword : banned){
+        map.remove(banword);
+      }
+      int count = 0;
+      String ans = "";
+    
+      for(Map.Entry<String,Integer> entry : map.entrySet()){
+          if(entry.getValue() > count) {
+              ans = entry.getKey();
+              count = entry.getValue();
+          } else if (entry.getValue() == count) {
+              ans += ", " + entry.getKey();
+          }
+      }
+      return ans;
+    }
+}
